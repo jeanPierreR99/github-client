@@ -1,41 +1,43 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { API_PATH } from "../utils/config";
+import { Sping } from "./Files";
 
 const Profile: React.FC = () => {
   const [profile, setProfile] = useState<any>(null);
   const [followers, setFollowers] = useState<any[]>([]);
+  const [load, setLoad] = useState<boolean>(true);
+  const fetchProfile = async () => {
+    try {
+      const response = await axios.get(`${API_PATH}/user`);
+      setProfile(response.data);
+    } catch (error) {
+      console.error("Error fetching the profile:", error);
+    }
+  };
+
+  const fetchFollowers = async () => {
+    try {
+      setLoad(true);
+      const response = await axios.get(`${API_PATH}/followers`);
+      setFollowers(response.data);
+      setLoad(false);
+    } catch (error) {
+      setLoad(false);
+      console.error("Error fetching followers:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await axios.get(`${API_PATH}/user`);
-        setProfile(response.data);
-      } catch (error) {
-        console.error("Error fetching the profile:", error);
-      }
-    };
-
-    const fetchFollowers = async () => {
-      try {
-        const response = await axios.get(`${API_PATH}/followers`);
-        setFollowers(response.data);
-      } catch (error) {
-        console.error("Error fetching followers:", error);
-      }
-    };
-
     fetchProfile();
-    fetchFollowers();
   }, []);
 
   if (!profile) return <div>Cargando perfil...</div>;
-  if (followers.length === 0) return <div>Cargando seguidores...</div>;
 
   return (
-    <div className="w-full md:w-2/5">
+    <div className="w-full md:w-2/5 space-y-4">
       {/* Sección del Perfil */}
-      <div className="bg-white mb-6 font-mono space-y-2">
+      <div className="font-mono space-y-2 p-2 rounded-md">
         <div className="flex items-center">
           <img
             src={profile.avatar_url}
@@ -43,40 +45,46 @@ const Profile: React.FC = () => {
             className="w-24 h-24 rounded-full mr-4"
           />
           <div>
-            <h2 className="text-2xl font-bold text-gray-800">
+            <h2 className="text-2xl font-bold text-white">
               {profile.name || profile.login}
             </h2>
-            <p className="text-gray-600">{profile.bio}</p>
+            <p className="text-gray-300">{profile.bio}</p>
             <a
               href={profile.html_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-500 hover:underline"
+              className="text-[#1677ff] hover:underline"
             >
               @{profile.login}
             </a>
-            <div className="mt-2 text-gray-500 text-xs">
+            <div className="mt-2 text-gray-300 text-xs">
               <span>{profile.public_repos} Repositorios</span> |{" "}
               <span>{profile.followers} Seguidores</span> |{" "}
               <span>{profile.following} Siguiendo</span>
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-1 text-xs text-gray-500 font-bold">
-          <span>📍 {profile.location}</span>
-          <span>💻 {profile.blog}</span>
+        <div className="flex flex-col gap-1 text-xs text-gray-300 font-bold">
+          <a>📍 {profile.location}</a>
+          <a className="hover:underline cursor-pointer">💻 {profile.blog}</a>
         </div>
       </div>
       {/* Sección de Seguidores */}
-      <fieldset className="border rounded-lg">
-        <legend className="font-mono text-sm text-gray-500 mx-2 px-2">
+      <details
+        className=""
+        onClick={() => {
+          fetchFollowers();
+        }}
+      >
+        <summary className="font-bold font-mono text-sm text-gray-300">
           Seguidores
-        </legend>
-        <ul className="px-2">
+        </summary>
+        {load && <Sping></Sping>}
+        <ul className="space-y-4">
           {followers.map((follower) => (
             <li
               key={follower.id}
-              className="flex items-center bg-white px-2 py-6 border-b"
+              className="p-2 bg-[var(--background-second)] flex items-center py-6 rounded-md"
             >
               <img
                 src={follower.avatar_url}
@@ -89,7 +97,7 @@ const Profile: React.FC = () => {
                     href={follower.html_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 font-semibold font-mono hover:underline"
+                    className="text-[#1677ff] font-bold font-mono hover:underline"
                   >
                     {follower.login}
                   </a>
@@ -97,7 +105,7 @@ const Profile: React.FC = () => {
                     href={follower.html_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-500 text-xs font-mono hover:underline"
+                    className="text-gray-300 text-xs font-mono hover:underline"
                   >
                     {follower.url}
                   </a>
@@ -106,7 +114,13 @@ const Profile: React.FC = () => {
             </li>
           ))}
         </ul>
-      </fieldset>
+      </details>
+
+      <details className="">
+        <summary className="font-bold font-mono text-sm text-gray-300">
+          Seguidos
+        </summary>
+      </details>
     </div>
   );
 };

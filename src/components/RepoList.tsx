@@ -119,10 +119,10 @@ const RepoList: React.FC = () => {
 
   return (
     <div className="w-full md:w-3/5 font-mono">
-      <div className="flex gap-2 items-center mb-4">
+      <div className="flex gap-4 items-center mb-4">
         <input
           type="search"
-          className="w-2/3 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+          className="w-2/3 bg-[var(--background-primary)] border-b text-gray-300 border-gray-400 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
           placeholder="Buscar"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)} // Actualiza el estado al cambiar
@@ -131,7 +131,7 @@ const RepoList: React.FC = () => {
         <div className="relative w-1/3">
           <select
             onChange={(e) => setSelectedLanguage(e.target.value)}
-            className="block appearance-none w-full bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="block appearance-none w-full bg-[var(--background-primary)] border-b border-gray-400 text-gray-300 px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">All</option>
             <option value="javascript">JavaScript</option>
@@ -144,7 +144,7 @@ const RepoList: React.FC = () => {
             <option value="typescript">TypeScript</option>
           </select>
 
-          <div className="absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 pointer-events-none">
+          <div className="absolute inset-y-0 right-0 flex items-center px-2 text-gray-300 pointer-events-none">
             <svg
               className="w-4 h-4"
               fill="none"
@@ -163,11 +163,11 @@ const RepoList: React.FC = () => {
         </div>
       </div>
 
-      <ul className="">
+      <ul className="space-y-4">
         {currentRepos.map((repo) => (
           <li
             key={repo.id}
-            className="bg-white border-b justify-between items-center flex gap-2 py-6"
+            className="border-b  border-gray-400 justify-between items-center flex gap-2 p-2 py-6"
           >
             <div className="flex justify-between flex-col gap-4">
               <a
@@ -180,12 +180,12 @@ const RepoList: React.FC = () => {
                 href={repo.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-500 text-xs font-mono hover:underline"
+                className="text-gray-300 text-xs font-mono hover:underline"
               >
                 {repo.html_url}
               </a>
             </div>
-            <div className="text-gray-500 text-xs flex flex-col gap-4 items-center">
+            <div className="text-gray-300 text-xs flex flex-col gap-4 items-center">
               <LanguageIndicator data={repo.language} />
               <span>{getTimeAgo(new Date(repo.updated_at))}</span>
             </div>
@@ -203,11 +203,11 @@ const RepoList: React.FC = () => {
             <button
               key={index + 1}
               onClick={() => paginate(index + 1)}
-              className={`px-4 py-2 border rounded-lg ${
+              className={`px-4 py-2  hover:border-b ${
                 currentPage === index + 1
-                  ? "bg-blue-600 text-white"
-                  : "bg-white text-blue-500"
-              } hover:bg-blue-600 hover:text-white transition duration-200`}
+                  ? "border-b text-white"
+                  : "text-gray-300"
+              }`}
             >
               {index + 1}
             </button>

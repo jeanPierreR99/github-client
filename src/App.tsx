@@ -2,7 +2,7 @@ import RepositoryProfile from "./page/RepositoryProfile";
 
 function App() {
   return (
-    <div>
+    <div className="">
       {/* <Repository /> */}
       {/* <RepoList></RepoList> */}
       {/* <Profile></Profile> */}

@@ -8,11 +8,36 @@ interface FileItem {
   url: string;
 }
 
+export const Sping = () => (
+  <div className="flex items-center justify-center">
+    <svg
+      className="w-8 h-8 text-gray-600 animate-spin"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle
+        className="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        stroke-width="4"
+      ></circle>
+      <path
+        className="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+      ></path>
+    </svg>
+  </div>
+);
 const Files: React.FC<any> = ({ setContent, setName, urlRepo }: any) => {
   if (!urlRepo) {
     return;
   }
   const [filesData, setFilesData] = useState<FileItem[]>([]);
+  const [load, setLoad] = useState<boolean>(true);
   const [folderContents, setFolderContents] = useState<
     Record<string, FileItem[]>
   >({});
@@ -20,6 +45,7 @@ const Files: React.FC<any> = ({ setContent, setName, urlRepo }: any) => {
   const fetchFiles = async (url: string) => {
     const response = await fetch(url);
     if (!response.ok) throw new Error(`Error: ${response.statusText}`);
+    setLoad(false);
     return response.json();
   };
 
@@ -30,8 +56,9 @@ const Files: React.FC<any> = ({ setContent, setName, urlRepo }: any) => {
 
   const handleContent = async (name: string, url: string) => {
     const fileContent = await fetchFiles(url);
+    const aux = atob(fileContent.content);
     setName(name);
-    setContent(atob(fileContent.content));
+    setContent(aux);
   };
 
   useEffect(() => {
@@ -91,10 +118,11 @@ const Files: React.FC<any> = ({ setContent, setName, urlRepo }: any) => {
   };
 
   return (
-    <div className="w-full md:w-1/3 h-full content-ul bg-[#1b1b1b] border border-gray-700 p-4 rounded-lg shadow-lg">
+    <div className="w-full scroll-style md:w-1/3 h-auto md:overflow-y-auto content-ul bg-[#1b1b1b] border border-gray-700 p-4 rounded-lg">
       <ul className="flex flex-col text-sm font-mono text-gray-400 gap-2">
         {renderFiles(filesData)}
       </ul>
+      {load && <Sping></Sping>}
     </div>
   );
 };

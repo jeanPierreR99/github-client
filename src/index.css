@@ -12,3 +12,27 @@
 .monaco-editor {
   font-family: "Courier New", Courier, monospace;
 }
+
+/* Para navegadores WebKit (Chrome, Safari) */
+.scroll-style::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scroll-style::-webkit-scrollbar-thumb {
+  background: #52dd52;
+  border-radius: 15px;
+}
+
+.scroll-style::-webkit-scrollbar-track {
+  background: #52dd52;
+}
+
+.scroll-style::-webkit-scrollbar-thumb:hover {
+  background: #52dd52;
+}
+
+/* Para Firefox */
+.scroll-style {
+  scrollbar-width: thin;
+  scrollbar-color: #12c651 #2d2d2d;
+}

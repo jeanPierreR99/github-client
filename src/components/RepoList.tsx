@@ -3,16 +3,15 @@ import ContentFiles from "./ContentFiles";
 import { API_PATH } from "../utils/config";
 
 const LanguageIndicator = ({ data }: any) => {
-  // Mapa de lenguajes a colores
   const languageColors: any = {
-    javascript: "#F7DF1E", // Amarillo
-    python: "#3776AB", // Azul
-    java: "#007396", // Azul oscuro
-    ruby: "#CC342D", // Rojo
-    go: "#00ADD8", // Cyan
-    php: "#4F5B93", // Morado
-    csharp: "#68217A", // Morado oscuro
-    typescript: "#007ACC", // Azul claro
+    javascript: "#F7DF1E",
+    python: "#3776AB",
+    java: "#007396",
+    ruby: "#CC342D",
+    go: "#00ADD8",
+    php: "#4F5B93",
+    csharp: "#68217A",
+    typescript: "#007ACC",
   };
 
   const language = data || "Sin lenguaje";
@@ -35,6 +34,7 @@ const RepoList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [reposPerPage] = useState(7);
   const [selectedLanguage, setSelectedLanguage] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // Nuevo estado para la búsqueda
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [url, setUrl] = useState<string>("");
 
@@ -42,60 +42,71 @@ const RepoList: React.FC = () => {
     setUrl(u);
     setIsModalOpen(true);
   };
-  const closeModal = () => {
+
+  const closeModal = (content: any) => {
+    content("");
     setIsModalOpen(false);
   };
 
-  useEffect(() => {
-    const handleRepo = async () => {
-      try {
-        const response = await fetch(`${API_PATH}/repo`);
+  const handleRepo = async () => {
+    try {
+      const response = await fetch(`${API_PATH}/repo`);
 
-        if (!response.ok) {
-          throw new Error("Error al obtener repositorios");
-        }
-
-        const data = await response.json();
-        console.log(data);
-        data.sort(
-          (a: any, b: any) =>
-            new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
-        );
-        setRepos(data);
-      } catch (error) {
-        console.error("Error:", error);
+      if (!response.ok) {
+        throw new Error("Error al obtener repositorios");
       }
-    };
 
+      const data = await response.json();
+      data.sort(
+        (a: any, b: any) =>
+          new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+      );
+      setRepos(data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  useEffect(() => {
     handleRepo();
   }, []);
 
   const getTimeAgo = (date: Date) => {
     const now = new Date();
     const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
     let interval = Math.floor(seconds / 31536000); // Años
     if (interval >= 1) return `${interval} año${interval > 1 ? "s" : ""} atrás`;
+
     interval = Math.floor(seconds / 2592000); // Meses
     if (interval >= 1)
       return `${interval} mes${interval > 1 ? "es" : ""} atrás`;
+
     interval = Math.floor(seconds / 86400); // Días
     if (interval >= 1) return `${interval} día${interval > 1 ? "s" : ""} atrás`;
+
     interval = Math.floor(seconds / 3600); // Horas
     if (interval >= 1)
       return `${interval} hora${interval > 1 ? "s" : ""} atrás`;
+
     interval = Math.floor(seconds / 60); // Minutos
     if (interval >= 1)
       return `${interval} minuto${interval > 1 ? "s" : ""} atrás`;
+
     return "justo ahora";
   };
 
-  // Filtrar repositorios por lenguaje seleccionado
-  const filteredRepos = selectedLanguage
-    ? repos.filter(
-        (repo) =>
-          repo.language?.toLowerCase() === selectedLanguage.toLowerCase()
-      )
-    : repos;
+  // Filtrar repositorios por lenguaje seleccionado y término de búsqueda
+  const filteredRepos = repos.filter((repo) => {
+    const matchesLanguage =
+      !selectedLanguage ||
+      repo.language?.toLowerCase() === selectedLanguage.toLowerCase();
+
+    const matchesSearchTerm = repo.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    return matchesLanguage && matchesSearchTerm;
+  });
 
   const indexOfLastRepo = currentPage * reposPerPage;
   const indexOfFirstRepo = indexOfLastRepo - reposPerPage;
@@ -107,12 +118,14 @@ const RepoList: React.FC = () => {
   const totalPages = Math.ceil(filteredRepos.length / reposPerPage);
 
   return (
-    <div className="w-full font-mono">
+    <div className="w-full md:w-3/5 font-mono">
       <div className="flex gap-2 items-center mb-4">
         <input
           type="search"
           className="w-2/3 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
           placeholder="Buscar"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)} // Actualiza el estado al cambiar
         />
 
         <div className="relative w-1/3">
@@ -143,7 +156,7 @@ const RepoList: React.FC = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M7 10l5 5 5-5H7z"
+                d="M7 10l5 5l5-5H7z"
               />
             </svg>
           </div>
@@ -154,17 +167,25 @@ const RepoList: React.FC = () => {
         {currentRepos.map((repo) => (
           <li
             key={repo.id}
-            className="bg-white w-fit border-b flex flex-col gap-2 p-4 py-6"
+            className="bg-white border-b justify-between items-center flex gap-2 py-6"
           >
-            <a
-              onClick={() => {
-                openModal(repo.name);
-              }}
-              className="text-blue-600 font-semibold hover:underline cursor-pointer"
-            >
-              {repo.name}
-            </a>
-            <div className="text-gray-500 text-xs flex gap-6 items-center">
+            <div className="flex justify-between flex-col gap-4">
+              <a
+                onClick={() => openModal(repo.name)}
+                className="text-blue-600 font-semibold hover:underline cursor-pointer"
+              >
+                {repo.name}
+              </a>
+              <a
+                href={repo.html_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 text-xs font-mono hover:underline"
+              >
+                {repo.html_url}
+              </a>
+            </div>
+            <div className="text-gray-500 text-xs flex flex-col gap-4 items-center">
               <LanguageIndicator data={repo.language} />
               <span>{getTimeAgo(new Date(repo.updated_at))}</span>
             </div>
@@ -193,6 +214,8 @@ const RepoList: React.FC = () => {
           ))}
         </div>
       </div>
+
+      {/* Modal para mostrar contenido */}
       <ContentFiles isOpen={isModalOpen} onClose={closeModal} urlRepo={url} />
     </div>
   );

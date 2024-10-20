@@ -5,7 +5,6 @@ import { API_PATH } from "../utils/config";
 const Profile: React.FC = () => {
   const [profile, setProfile] = useState<any>(null);
   const [followers, setFollowers] = useState<any[]>([]);
-  const token = "tu_token_aqui"; // Asegúrate de usar tu token aquí
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -28,50 +27,56 @@ const Profile: React.FC = () => {
 
     fetchProfile();
     fetchFollowers();
-  }, [token]);
+  }, []);
 
   if (!profile) return <div>Cargando perfil...</div>;
   if (followers.length === 0) return <div>Cargando seguidores...</div>;
 
   return (
-    <div className="w-full">
+    <div className="w-full md:w-2/5">
       {/* Sección del Perfil */}
-      <div className="flex items-center p-6 bg-white mb-6 font-mono">
-        <img
-          src={profile.avatar_url}
-          alt={`${profile.name}'s avatar`}
-          className="w-24 h-24 rounded-full mr-4"
-        />
-        <div>
-          <h2 className="text-2xl font-bold text-gray-800">
-            {profile.name || profile.login}
-          </h2>
-          <p className="text-gray-600">{profile.bio}</p>
-          <a
-            href={profile.html_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline"
-          >
-            @{profile.login}
-          </a>
-          <div className="mt-2 text-gray-500 text-xs">
-            <span>{profile.public_repos} Repositorios</span> |{" "}
-            <span>{profile.followers} Seguidores</span> |{" "}
-            <span>{profile.following} Siguiendo</span>
+      <div className="bg-white mb-6 font-mono space-y-2">
+        <div className="flex items-center">
+          <img
+            src={profile.avatar_url}
+            alt={`${profile.name}'s avatar`}
+            className="w-24 h-24 rounded-full mr-4"
+          />
+          <div>
+            <h2 className="text-2xl font-bold text-gray-800">
+              {profile.name || profile.login}
+            </h2>
+            <p className="text-gray-600">{profile.bio}</p>
+            <a
+              href={profile.html_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:underline"
+            >
+              @{profile.login}
+            </a>
+            <div className="mt-2 text-gray-500 text-xs">
+              <span>{profile.public_repos} Repositorios</span> |{" "}
+              <span>{profile.followers} Seguidores</span> |{" "}
+              <span>{profile.following} Siguiendo</span>
+            </div>
           </div>
         </div>
+        <div className="flex flex-col gap-1 text-xs text-gray-500 font-bold">
+          <span>📍 {profile.location}</span>
+          <span>💻 {profile.blog}</span>
+        </div>
       </div>
-
       {/* Sección de Seguidores */}
-      {/* Sección de Seguidores */}
-      <fieldset className="border p-4 rounded-lg">
-        <legend className="font-mono text-md text-black">Seguidores</legend>
-        <ul className="">
+      <fieldset className="border rounded-lg">
+        <legend className="font-mono text-sm text-gray-500 mx-2 px-2">
+          Seguidores
+        </legend>
+        <ul className="px-2">
           {followers.map((follower) => (
             <li
               key={follower.id}
-              className="flex items-center bg-white p-4 py-6 border-b"
+              className="flex items-center bg-white px-2 py-6 border-b"
             >
               <img
                 src={follower.avatar_url}
@@ -79,14 +84,24 @@ const Profile: React.FC = () => {
                 className="w-12 h-12 rounded-full mr-4"
               />
               <div>
-                <a
-                  href={follower.html_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 font-semibold font-mono hover:underline"
-                >
-                  {follower.login}
-                </a>
+                <div className="flex flex-col">
+                  <a
+                    href={follower.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 font-semibold font-mono hover:underline"
+                  >
+                    {follower.login}
+                  </a>
+                  <a
+                    href={follower.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-500 text-xs font-mono hover:underline"
+                  >
+                    {follower.url}
+                  </a>
+                </div>
               </div>
             </li>
           ))}

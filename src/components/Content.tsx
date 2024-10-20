@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Editor, { OnMount } from "@monaco-editor/react";
-import ReactMarkdown from "react-markdown";
 
 const Content: React.FC<any> = ({ name, content }: any) => {
   const [copyStatus, setCopyStatus] = useState("Copiar código");
@@ -71,13 +70,14 @@ const Content: React.FC<any> = ({ name, content }: any) => {
           {copyStatus}
         </button>
       </div>
-
       {name === "README.md" ? (
         <div
           style={{ position: "sticky", top: "10px" }} // Posición sticky
           className="markdown-container h-[400px] overflow-y-auto p-4 text-white bg-[#1e1e1e] rounded-lg"
         >
-          <ReactMarkdown>{content}</ReactMarkdown>
+          {/* <ReactMarkdown>{content}</ReactMarkdown>
+          div */}
+          <div dangerouslySetInnerHTML={{ __html: content }} />
         </div>
       ) : (
         <Editor

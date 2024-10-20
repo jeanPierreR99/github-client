@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.content-container {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border: 2px solid #444444;
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.monaco-editor {
+  font-family: "Courier New", Courier, monospace;
+}

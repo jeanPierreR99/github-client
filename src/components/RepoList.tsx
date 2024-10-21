@@ -49,7 +49,7 @@ const RepoList: React.FC = () => {
   };
 
   const handleRepo = async () => {
-    await handleData(setRepos, "/repo");
+    await handleData(setRepos, "repo");
     setRepos((prevRepos) => {
       return prevRepos.sort(
         (a: any, b: any) =>

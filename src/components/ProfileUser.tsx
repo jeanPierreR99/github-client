@@ -9,8 +9,8 @@ const ProfileUser: React.FC<profileI> = ({ user }) => {
   const [achievements, setAchievements] = useState<any[]>([]);
 
   useEffect(() => {
-    handleData(setProfile, `/follower/${user}`);
-    handleData(setAchievements, `/achievement/${user}`);
+    handleData(setProfile, `follower/${user}`);
+    handleData(setAchievements, `achievement/${user}`);
   }, []);
 
   return (

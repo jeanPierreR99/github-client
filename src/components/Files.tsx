@@ -118,7 +118,7 @@ const Files: React.FC<any> = ({ setContent, setName, urlRepo }: any) => {
   };
 
   return (
-    <div className="w-full scroll-style md:w-1/3 h-auto md:overflow-y-auto content-ul bg-[#1b1b1b]  p-4 rounded-lg">
+    <div className="w-full scroll-style md:w-1/3 h-auto md:overflow-y-auto content-ul     p-4 rounded-lg">
       <ul className="flex flex-col text-sm font-mono text-gray-400 gap-2">
         {renderFiles(filesData)}
       </ul>

@@ -10,14 +10,14 @@ const ContentFiles: React.FC<any> = ({ isOpen, onClose, urlRepo }: any) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-[var(--background-primary)] rounded-lg shadow-lg w-11/12 m-auto px-2">
+      <div className="bg-cyan-500/10 border border-cyan-500 backdrop-blur-md rounded-lg shadow-lg w-11/12 m-auto px-2">
         <div className=" flex p-4 justify-between">
           <h2 className="text-md font-bold text-gray-300">{urlRepo}</h2>
           <button
             onClick={() => {
               onClose(setContent);
             }}
-            className=" top-2 text-2xl right-2 text-gray-300 hover:text-gray-900"
+            className=" top-2 text-2xl right-2 text-gray-300 hover:text-gray-400"
           >
             &times;{/* Icono de cerrar */}
           </button>

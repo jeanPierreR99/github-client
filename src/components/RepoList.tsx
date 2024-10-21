@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ContentFiles from "./ContentFiles";
-import { API_PATH } from "../utils/config";
+import { handleData } from "../utils/functions";
 
 const LanguageIndicator = ({ data }: any) => {
   const languageColors: any = {
@@ -49,22 +49,13 @@ const RepoList: React.FC = () => {
   };
 
   const handleRepo = async () => {
-    try {
-      const response = await fetch(`${API_PATH}/repo`);
-
-      if (!response.ok) {
-        throw new Error("Error al obtener repositorios");
-      }
-
-      const data = await response.json();
-      data.sort(
+    await handleData(setRepos, "/repo");
+    setRepos((prevRepos) => {
+      return prevRepos.sort(
         (a: any, b: any) =>
           new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
       );
-      setRepos(data);
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    });
   };
 
   useEffect(() => {
@@ -122,7 +113,7 @@ const RepoList: React.FC = () => {
       <div className="flex gap-4 items-center mb-4">
         <input
           type="search"
-          className="w-2/3 bg-[var(--background-primary)] border-b text-gray-300 border-gray-400 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+          className="w-2/3 bg-[var(--background-second)] border-b text-gray-300 border-gray-600 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
           placeholder="Buscar"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)} // Actualiza el estado al cambiar
@@ -131,7 +122,7 @@ const RepoList: React.FC = () => {
         <div className="relative w-1/3">
           <select
             onChange={(e) => setSelectedLanguage(e.target.value)}
-            className="block appearance-none w-full bg-[var(--background-primary)] border-b border-gray-400 text-gray-300 px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="block appearance-none w-full bg-[var(--background-second)] text-sm border-b border-gray-600 text-gray-300 px-2 py-1 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">All</option>
             <option value="javascript">JavaScript</option>
@@ -163,11 +154,11 @@ const RepoList: React.FC = () => {
         </div>
       </div>
 
-      <ul className="space-y-4">
+      <ul className="">
         {currentRepos.map((repo) => (
           <li
             key={repo.id}
-            className="border-b  border-gray-400 justify-between items-center flex gap-2 p-2 py-6"
+            className="border-t  border-gray-600 justify-between items-center flex gap-2 p-2 py-6"
           >
             <div className="flex justify-between flex-col gap-4">
               <a
@@ -195,7 +186,7 @@ const RepoList: React.FC = () => {
 
       {/* Paginación */}
       <div className="flex flex-col gap-2 mt-4">
-        <span className="text-xs text-gray-500">
+        <span className="text-xs text-gray-300">
           Total Repo {filteredRepos.length}
         </span>
         <div className="flex justify-end gap-1">

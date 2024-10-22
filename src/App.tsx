@@ -1,13 +1,14 @@
 import RepositoryProfile from "./page/RepositoryProfile";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+const queryClient = new QueryClient();
 function App() {
   return (
-    <div className="">
-      {/* <Repository /> */}
-      {/* <RepoList></RepoList> */}
-      {/* <Profile></Profile> */}
-      <RepositoryProfile></RepositoryProfile>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div className="">
+        <RepositoryProfile></RepositoryProfile>
+      </div>
+    </QueryClientProvider>
   );
 }
 

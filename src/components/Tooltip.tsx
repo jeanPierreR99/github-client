@@ -6,10 +6,10 @@ interface tooltipI {
   children: any;
 }
 const Tooltip: React.FC<tooltipI> = ({ content, children }) => {
-  const [visible, setVisible] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleClick = () => {
-    setVisible(!visible);
+    setOpen(!open);
   };
 
   return (
@@ -17,10 +17,10 @@ const Tooltip: React.FC<tooltipI> = ({ content, children }) => {
       <div onClick={handleClick} className="cursor-pointer">
         {children}
       </div>
-      {visible && (
-        <div className="absolute  bottom-10 z-10 p-2 w-[500px] text-white bg-cyan-500/10 border border-cyan-500 backdrop-blur-md rounded-md shadow-lg">
+      {open && (
+        <div className="absolute -left-16 md:left-0 md:bottom-10 z-10 p-2 md:w-[500px] w-[350px] text-white bg-cyan-500/10 border border-cyan-500 backdrop-blur-md rounded-md shadow-lg">
           {/* {content} */}
-          <button className="absolute top-4 right-4 px-2" onClick={handleClick}>
+          <button className="absolute top-2 right-2 px-2" onClick={handleClick}>
             x
           </button>
           <ProfileUser user={content}></ProfileUser>

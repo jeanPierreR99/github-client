@@ -39,15 +39,13 @@ const getTimeAgo = (date: Date) => {
   if (interval >= 1) return `${interval} año${interval > 1 ? "s" : ""} atrás`;
 
   interval = Math.floor(seconds / 2592000); // Meses
-  if (interval >= 1)
-    return `${interval} mes${interval > 1 ? "es" : ""} atrás`;
+  if (interval >= 1) return `${interval} mes${interval > 1 ? "es" : ""} atrás`;
 
   interval = Math.floor(seconds / 86400); // Días
   if (interval >= 1) return `${interval} día${interval > 1 ? "s" : ""} atrás`;
 
   interval = Math.floor(seconds / 3600); // Horas
-  if (interval >= 1)
-    return `${interval} hora${interval > 1 ? "s" : ""} atrás`;
+  if (interval >= 1) return `${interval} hora${interval > 1 ? "s" : ""} atrás`;
 
   interval = Math.floor(seconds / 60); // Minutos
   if (interval >= 1)
@@ -165,9 +163,9 @@ const RepoList: React.FC = () => {
             <div className="flex w-6/12 md:w-full overflow-hidden justify-between flex-col gap-4">
               <a
                 onClick={() => openModal(repo.name)}
-                className="text-blue-600 font-semibold hover:underline cursor-pointer"
+                className="text-cyan-500 font-semibold hover:underline cursor-pointer"
               >
-                {repo.name}
+                🗂️ {repo.name}
               </a>
               <a
                 href={repo.html_url}
@@ -175,12 +173,14 @@ const RepoList: React.FC = () => {
                 rel="noopener noreferrer"
                 className="text-gray-300 truncate text-xs font-mono hover:underline"
               >
-                {repo.html_url}
+                🌐 {repo.html_url}
               </a>
             </div>
             <div className="text-gray-300 w-6/12 md-w-full bg-s-200 text-xs flex flex-col gap-4">
               <LanguageIndicator data={repo.language} />
-              <span className="text-right">{getTimeAgo(new Date(repo.updated_at))}</span>
+              <span className="text-right">
+                {getTimeAgo(new Date(repo.updated_at))}
+              </span>
             </div>
           </li>
         ))}

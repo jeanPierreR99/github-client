@@ -1,3 +1,4 @@
+import { GitHubProvider } from "./context/Context.provider";
 import RepositoryProfile from "./page/RepositoryProfile";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -6,7 +7,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <div className="">
-        <RepositoryProfile></RepositoryProfile>
+        <GitHubProvider>
+          <RepositoryProfile></RepositoryProfile>
+        </GitHubProvider>
       </div>
     </QueryClientProvider>
   );

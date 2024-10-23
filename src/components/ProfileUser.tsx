@@ -38,15 +38,15 @@ const ProfileUser: React.FC<profileI> = ({ user }) => {
             className="md:w-36 w-24 md:h-36 h-24 rounded-full mr-4"
           />
           <div>
-            <h2 className="text-2xl font-bold text-white">
+            <h2 className="text-2xl  text-gradient first-letter:text-5xl sedgwick-ave-regular">
               {userData.name || userData.login}
             </h2>
-            <p className="text-gray-300">{userData.bio}</p>
+            <p className="text-gray-300 sedgwick-ave-regular">{userData.bio}</p>
             <a
               href={userData.html_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#1677ff] hover:underline"
+              className="text-cyan-500 hover:underline"
             >
               @{userData.login}
             </a>
@@ -82,7 +82,12 @@ const ProfileUser: React.FC<profileI> = ({ user }) => {
           <div className="flex gap-1 mt-2">
             {achievementData.length > 0 &&
               achievementData.map((data: any, index: any) => (
-                <img key={index} className="md:h-20 h-14 md:w-20 w-14" src={data.path} alt="" />
+                <img
+                  key={index}
+                  className="md:h-20 h-14 md:w-20 w-14"
+                  src={data.path}
+                  alt=""
+                />
               ))}
           </div>
         </div>

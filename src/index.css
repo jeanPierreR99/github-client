@@ -44,3 +44,24 @@ body {
   scrollbar-width: thin;
   scrollbar-color: #03daf1 #1c1c1c;
 }
+/** Text Gradient Example */
+.text-gradient {
+  background: #008080;
+  background: linear-gradient(
+    to left,
+    #008080 0%,
+    #ffffff 25%,
+    #05c1ff 50%,
+    #ffffff 75%,
+    #005757 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.sedgwick-ave-regular {
+  font-family: "Sedgwick Ave", cursive;
+  font-weight: 400;
+  letter-spacing: 1px;
+  font-style: normal;
+  height: auto;
+}

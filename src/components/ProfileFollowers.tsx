@@ -32,7 +32,7 @@ const Followers = () => {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#1677ff] w-fit font-bold font-mono hover:underline"
+                  className="text-cyan-500 w-fit font-bold font-mono hover:underline"
                 >
                   {follower.login}
                 </a>
@@ -44,7 +44,7 @@ const Followers = () => {
               rel="noopener noreferrer"
               className="text-gray-300 text-xs font-mono hover:underline"
             >
-              {follower.html_url}
+              🌐 {follower.html_url}
             </a>
           </div>
         </li>
@@ -65,10 +65,8 @@ const ProfileFollowers: React.FC = () => {
         <summary className="font-bold font-mono text-sm text-gray-300">
           Seguidores
         </summary>
-        {isVisible&&
-        <Followers></Followers>
-        }
-        </details>
+        {isVisible && <Followers></Followers>}
+      </details>
     </div>
   );
 };
